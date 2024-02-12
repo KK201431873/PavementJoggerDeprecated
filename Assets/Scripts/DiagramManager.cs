@@ -38,12 +38,14 @@ public class DiagramManager : MonoBehaviour
                 paths.Insert(index, Instantiate(pathBase, transform).SetIndex(index));
             }
 
-            if (req.Equals("CLEAR"))
+            if (req.Equals("CLEAR") && (0 <= index && index < PJ.X.Count))
             {
-                for (int i = PJ.X.Count - 1; i >= index; i++)
+                for (int i = PJ.X.Count - 1; i >= index; i--)
                 {
-                    Destroy(nodes[i]);
-                    Destroy(paths[i]);
+                    nodes[i].Kill();
+                    paths[i].Kill();
+                    nodes.RemoveAt(i); 
+                    paths.RemoveAt(i);
 
                     PJ.X.RemoveAt(i);
                     PJ.Y.RemoveAt(i);

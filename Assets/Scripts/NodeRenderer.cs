@@ -16,6 +16,11 @@ public class NodeRenderer : MonoBehaviour
         return this;
     }
 
+    public void Kill()
+    {
+        Destroy(gameObject);
+    }
+
     void Start()
     {
         transform.localScale = new Vector3(0.72f, 0.72f, 1);

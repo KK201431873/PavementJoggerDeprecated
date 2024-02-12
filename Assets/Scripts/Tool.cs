@@ -42,12 +42,8 @@ public class Tool : MonoBehaviour
         HandleMouseMovement();
         HandleKeyboardMovement();
         HandleNodeCreation();
+        HandleNodeDeletion();
 
-        if ((Input.GetKeyDown(KeyCode.Q) && Input.GetKey(KeyCode.R)) ||
-                (Input.GetKeyDown(KeyCode.R) && Input.GetKey(KeyCode.Q)))
-        { // reset 
-            PJ.ClearFrom(0);
-        }
 
         // render current position
         poseText.text = "X: "+Round(x*PJ.in_per_px,2)+
@@ -59,6 +55,19 @@ public class Tool : MonoBehaviour
         size = transform.localScale;
     }
 
+    private void HandleNodeDeletion()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            PJ.ClearFrom(PJ.X.Count - 1);
+        }
+
+        if ((Input.GetKeyDown(KeyCode.Q) && Input.GetKey(KeyCode.R)) ||
+                (Input.GetKeyDown(KeyCode.R) && Input.GetKey(KeyCode.Q)))
+        { // reset 
+            PJ.ClearFrom(0);
+        }
+    }
 
     private void HandleNodeCreation()
     {
