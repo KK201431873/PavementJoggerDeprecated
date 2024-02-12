@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7712455930523404876}
   - component: {fileID: 776192629246822013}
   m_Layer: 0
-  m_Name: RenderedNode
+  m_Name: Node Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

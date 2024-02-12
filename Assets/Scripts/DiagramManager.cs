@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NodeManager : MonoBehaviour
+public class DiagramManager : MonoBehaviour
 {
 
-    [SerializeField] private RenderedNode nodeBase;
-    public List<RenderedNode> nodes;
+    [SerializeField] private NodeRenderer nodeBase;
+    [SerializeField] private PathRenderer pathBase;
+    public List<NodeRenderer> nodes;
+    public List<PathRenderer> paths;
 
     void Update()
     {
         while (PJ.requests.Count > 0)
         {
             var (req, index, values) = PJ.requests[^1];
+            string action = values.action;
             PJ.requests.RemoveAt(PJ.requests.Count - 1);
 
             if (req.Equals("ADD"))
@@ -21,8 +24,8 @@ public class NodeManager : MonoBehaviour
                 for (int i = index; i < PJ.X.Count; i++)
                 {
                     nodes[i].SetIndex(i + 1);
+                    paths[i].SetIndex(i + 1);
                 }
-                nodes.Insert(index, Instantiate(nodeBase).SetIndex(index));
 
                 PJ.X.Insert(index, values.x);
                 PJ.Y.Insert(index, values.y);
@@ -30,19 +33,24 @@ public class NodeManager : MonoBehaviour
                 PJ.ACTION.Insert(index, values.action);
                 PJ.ARM.Insert(index, values.arm);
                 PJ.DELAY.Insert(index, values.delay);
+
+                nodes.Insert(index, Instantiate(nodeBase, transform).SetIndex(index));
+                paths.Insert(index, Instantiate(pathBase, transform).SetIndex(index));
             }
 
             if (req.Equals("CLEAR"))
             {
                 for (int i = PJ.X.Count - 1; i >= index; i++)
                 {
+                    Destroy(nodes[i]);
+                    Destroy(paths[i]);
+
                     PJ.X.RemoveAt(i);
                     PJ.Y.RemoveAt(i);
                     PJ.HEADING.RemoveAt(i);
                     PJ.ARM.RemoveAt(i);
                     PJ.ACTION.RemoveAt(i);
                     PJ.DELAY.RemoveAt(i);
-                    Destroy(nodes[i]);
                 }
             }
 

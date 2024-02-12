@@ -380,7 +380,7 @@ GameObject:
   - component: {fileID: 820959887}
   - component: {fileID: 820959886}
   m_Layer: 0
-  m_Name: NodeManager
+  m_Name: Diagram Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -399,7 +399,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeBase: {fileID: 776192629246822013, guid: 34b3b8267545c9d4a9ebcee9a61e42ce, type: 3}
+  pathBase: {fileID: 3275644877173486632, guid: 7a6024672c6a7504bbb423eac2275c16, type: 3}
   nodes: []
+  paths: []
 --- !u!4 &820959887
 Transform:
   m_ObjectHideFlags: 0
@@ -1027,7 +1029,7 @@ GameObject:
   - component: {fileID: 1933517658}
   - component: {fileID: 1933517659}
   m_Layer: 0
-  m_Name: CENTERSTAGE FIELD
+  m_Name: Field
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1431,6 +1433,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 2105097197}
-  - {fileID: 1933517658}
   - {fileID: 1269463769}
   - {fileID: 820959887}
+  - {fileID: 1933517658}

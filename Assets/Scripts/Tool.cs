@@ -9,9 +9,11 @@ using UnityEngine.UI;
 public class Tool : MonoBehaviour
 {
 
-    public Text poseText, modeText;
+    public static Vector3 size;
+    public static double x, y, heading;
 
-    private double x, y, heading;
+    [SerializeField] Text poseText, modeText;
+
     private double px, py;
     private float delay=0;
 
@@ -26,7 +28,7 @@ public class Tool : MonoBehaviour
         x = 0;
         y = 0;
         heading = -90;
-        goTo(new Vector2(0, 0));
+        GoTo(new Vector2(0, 0));
     }
 
     // Update is called once per frame
@@ -48,12 +50,13 @@ public class Tool : MonoBehaviour
         }
 
         // render current position
-        poseText.text = "X: "+round(x*PJ.in_per_px,2)+
-            "in\nY: "+round(y*PJ.in_per_px,2)+
-            "in\nR: " + round(heading, 2) + "°";
+        poseText.text = "X: "+Round(x*PJ.in_per_px,2)+
+            "in\nY: "+Round(y*PJ.in_per_px,2)+
+            "in\nR: " + Round(heading, 2) + "°";
         modeText.text = PJ.MODE;
         tf.position = new Vector3((float)x, (float)y, tf.position.z);
         tf.eulerAngles = new Vector3(0,0,(float)heading);
+        size = transform.localScale;
     }
 
 
@@ -61,9 +64,9 @@ public class Tool : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            double rx = round(x * PJ.in_per_px, 2),
-                ry = round(y * PJ.in_per_px, 2),
-                rheading = round(heading, 2);
+            double rx = Round(x * PJ.in_per_px, 2),
+                ry = Round(y * PJ.in_per_px, 2),
+                rheading = Round(heading, 2);
 
             if (PJ.X.Count == 0)
             {
@@ -122,17 +125,17 @@ public class Tool : MonoBehaviour
         if (delay == 0)
         {
             if (Input.GetKey(KeyCode.UpArrow))
-                goTo(new Vector2((float)x, (float)roundToNearest(
-                    y + 3 / (precision * ipp) * Mathf.Ceil(0.00001f + Mathf.Abs((float)(y - py))) / (1 * 3 / precision), 0.25 / ipp)));
+                GoTo(new Vector2((float)x, (float)RoundToNearest(
+                    y + 3 / (precision * ipp) * Mathf.Ceil(1E-6f + Mathf.Abs((float)(y - py))) / (1 * 3 / precision), 0.25 / ipp)));
             if (Input.GetKey(KeyCode.DownArrow))
-                goTo(new Vector2((float)x, (float)roundToNearest(
-                    y - 3 / (precision * ipp) * Mathf.Ceil(0.00001f + Mathf.Abs((float)(y - py))) / (1 * 3 / precision), 0.25 / ipp)));
+                GoTo(new Vector2((float)x, (float)RoundToNearest(
+                    y - 3 / (precision * ipp) * Mathf.Ceil(1E-6f + Mathf.Abs((float)(y - py))) / (1 * 3 / precision), 0.25 / ipp)));
             if (Input.GetKey(KeyCode.LeftArrow))
-                goTo(new Vector2((float)roundToNearest(
-                    x - 3 / (precision * ipp) * Mathf.Ceil(0.00001f + Mathf.Abs((float)(x - px))) / (1 * 3 / precision), 0.25 / ipp), (float)y));
+                GoTo(new Vector2((float)RoundToNearest(
+                    x - 3 / (precision * ipp) * Mathf.Ceil(1E-6f + Mathf.Abs((float)(x - px))) / (1 * 3 / precision), 0.25 / ipp), (float)y));
             if (Input.GetKey(KeyCode.RightArrow))
-                goTo(new Vector2((float)roundToNearest(
-                    x + 3 / (precision * ipp) * Mathf.Ceil(0.00001f + Mathf.Abs((float)(x - px))) / (1 * 3 / precision), 0.25 / ipp), (float)y));
+                GoTo(new Vector2((float)RoundToNearest(
+                    x + 3 / (precision * ipp) * Mathf.Ceil(1E-6f + Mathf.Abs((float)(x - px))) / (1 * 3 / precision), 0.25 / ipp), (float)y));
         }
 
     }
@@ -169,9 +172,9 @@ public class Tool : MonoBehaviour
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    if (hypot(snapPoints[i, 0] - mousePos.x, snapPoints[i, 1] - mousePos.y) < 0.5)
+                    if (Hypot(snapPoints[i, 0] - mousePos.x, snapPoints[i, 1] - mousePos.y) < 0.5)
                     {
-                        goTo(new Vector2((float)snapPoints[i, 0], (float)snapPoints[i, 1]));
+                        GoTo(new Vector2((float)snapPoints[i, 0], (float)snapPoints[i, 1]));
                         snapped = true;
                         break;
                     }
@@ -183,9 +186,9 @@ public class Tool : MonoBehaviour
                 // mode controls
                 if (PJ.MODE.Equals("ANGULAR") || PJ.X.Count == 0)
                 {
-                    goTo(new Vector3(
-                        (float)roundToNearest(mousePos.x, step),
-                        (float)roundToNearest(mousePos.y, step),
+                    GoTo(new Vector3(
+                        (float)RoundToNearest(mousePos.x, step),
+                        (float)RoundToNearest(mousePos.y, step),
                         0));
                 }
                 if (PJ.MODE.Equals("CARDINAL") && PJ.X.Count > 0)
@@ -194,10 +197,10 @@ public class Tool : MonoBehaviour
                     double clickY = PJ.Y.Last() / PJ.in_per_px;
                     if (Mathf.Abs(mousePos.x - (float)clickX) > Mathf.Abs(mousePos.y - (float)clickY))
                     {
-                        goTo(new Vector2((float)roundToNearest(mousePos.x, step), (float)clickY));
+                        GoTo(new Vector2((float)RoundToNearest(mousePos.x, step), (float)clickY));
                     } else
                     {
-                        goTo(new Vector2((float)clickX, (float)roundToNearest(mousePos.y, step)));
+                        GoTo(new Vector2((float)clickX, (float)RoundToNearest(mousePos.y, step)));
                     }
                 }
             }
@@ -209,7 +212,7 @@ public class Tool : MonoBehaviour
         {
             double dir = Mathf.Atan2(mousePos.y - (float)y, mousePos.x - (float)x) * (180 / Mathf.PI);
             double step = PJ.MODE.Equals("ANGULAR") ? 30.0 / PJ.precision : (PJ.MODE.Equals("CARDINAL") ? 90.0 : 0);
-            heading = round(dir/step)*step;
+            heading = Round(dir/step)*step;
         }
 
     }
@@ -238,27 +241,27 @@ public class Tool : MonoBehaviour
         hovering = false;
     }
 
-    private void goTo(Vector2 vector2) {
+    private void GoTo(Vector2 vector2) {
         x = Mathf.Min(5, Mathf.Max(-5, vector2.x)); 
         y = Mathf.Min(5, Mathf.Max(-5, vector2.y));
     }
 
-    private double round(double x)
+    private double Round(double x)
     {
         return System.Math.Round(x);
     }
 
-    private double round(double x, int places)
+    private double Round(double x, int places)
     {
         return System.Math.Round(x, places);
     }
 
-    private double roundToNearest(double x, double multiple)
+    private double RoundToNearest(double x, double multiple)
     {
         return System.Math.Round(x / multiple) * multiple;
     }
 
-    private double hypot(double x, double y)
+    private double Hypot(double x, double y)
     {
         return Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
     }

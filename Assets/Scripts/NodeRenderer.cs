@@ -2,18 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RenderedNode : MonoBehaviour
+public class NodeRenderer : MonoBehaviour
 {
 
     public int index;
 
     public Sprite DRIVE, DELAY, TURN_LEFT, TURN_RIGHT, CLAW, ARM, ELBOW, NULL;
 
-    public RenderedNode SetIndex(int index)
+    public NodeRenderer SetIndex(int index)
     {
         this.index = index;
-        this.name = "Node "+index;
+        name = "Node "+index;
         return this;
+    }
+
+    void Start()
+    {
+        transform.localScale = new Vector3(0.72f, 0.72f, 1);
     }
 
     void Update()
