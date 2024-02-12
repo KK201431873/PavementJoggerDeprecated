@@ -11,6 +11,7 @@ public class Tool : MonoBehaviour
 
     public static Vector3 size;
     public static double x, y, heading;
+    public static Vector3 realPose;
 
     [SerializeField] Text poseText, modeText;
 
@@ -28,6 +29,7 @@ public class Tool : MonoBehaviour
         x = 0;
         y = 0;
         heading = -90;
+        realPose = Vector3.zero;
         GoTo(new Vector2(0, 0));
     }
 
@@ -46,6 +48,9 @@ public class Tool : MonoBehaviour
 
 
         // render current position
+        realPose.x = (float)(x * PJ.in_per_px);
+        realPose.y = (float)(y * PJ.in_per_px);
+        realPose.z = (float)heading;
         poseText.text = "X: "+Round(x*PJ.in_per_px,2)+
             "in\nY: "+Round(y*PJ.in_per_px,2)+
             "in\nR: " + Round(heading, 2) + "°";
