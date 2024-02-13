@@ -50,10 +50,15 @@ public class Calculator : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Y))
         {
+            Dictionary<string, string> maps = new Dictionary<string, string>(){
+                {"TURN_LEFT", "TURN_RIGHT"},
+                {"TURN_RIGHT", "TURN_LEFT"}};
             for (int i = 0; i < PJ.X.Count; i++)
             {
                 PJ.Y[i] = -PJ.Y[i];
                 PJ.HEADING[i] = -PJ.HEADING[i];
+                if (maps.Keys.Contains(PJ.ACTION[i]))
+                    PJ.ACTION[i] = maps[PJ.ACTION[i]];
             }
         }
 
