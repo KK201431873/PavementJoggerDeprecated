@@ -36,15 +36,18 @@ public class Tool : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // handle mode
-        if (Input.GetKeyDown(KeyCode.A))
-            PJ.MODE = PJ.MODE.Equals("CARDINAL") ? "ANGULAR" : (PJ.MODE.Equals("ANGULAR") ? "CARDINAL" : "null");
+        if (!Calculator.exportPaneActive && !Calculator.importPaneActive)
+        {
+            // handle mode
+            if (Input.GetKeyDown(KeyCode.A))
+                PJ.MODE = PJ.MODE.Equals("CARDINAL") ? "ANGULAR" : (PJ.MODE.Equals("ANGULAR") ? "CARDINAL" : "null");
 
-        // handle editing event
-        HandleMouseMovement();
-        HandleKeyboardMovement();
-        HandleNodeCreation();
-        HandleNodeDeletion();
+            // handle editing event
+            HandleMouseMovement();
+            HandleKeyboardMovement();
+            HandleNodeCreation();
+            HandleNodeDeletion();
+        }
 
 
         // render current position
@@ -207,15 +210,43 @@ public class Tool : MonoBehaviour
                 }
                 if (PJ.MODE.Equals("CARDINAL") && PJ.X.Count > 0)
                 {
-                    double clickX = PJ.X.Last() / PJ.in_per_px;
-                    double clickY = PJ.Y.Last() / PJ.in_per_px;
-                    if (Mathf.Abs(mousePos.x - (float)clickX) > Mathf.Abs(mousePos.y - (float)clickY))
+                    float clickX = (float)(PJ.X.Last() / PJ.in_per_px);
+                    float clickY = (float)(PJ.Y.Last() / PJ.in_per_px);
+
+                    double dir = Mathf.Atan2(mousePos.y - clickY, mousePos.x - clickX) * (180 / Mathf.PI);
+                    double snappedAngle = RoundToNearest(dir, 45.0);
+
+                    double magnitude = Hypot(mousePos.y - clickY, mousePos.x - clickX);
+
+                    float dx = (float)(RoundToNearest(magnitude, step) * Math.Cos(snappedAngle * (Mathf.PI / 180)));
+                    float dy = (float)(RoundToNearest(magnitude, step) * Math.Sin(snappedAngle * (Mathf.PI / 180)));
+
+                    float new_x, new_y;
+
+                    if (snappedAngle % 90 != 0)
                     {
-                        GoTo(new Vector2((float)RoundToNearest(mousePos.x, step), (float)clickY));
-                    } else
-                    {
-                        GoTo(new Vector2((float)clickX, (float)RoundToNearest(mousePos.y, step)));
+                        float diff_snapped_x = Math.Abs( Mathf.Min(5, Mathf.Max(-5, clickX + dx)) - (clickX + dx) );
+                        float diff_snapped_y = Math.Abs( Mathf.Min(5, Mathf.Max(-5, clickY + dy)) - (clickY + dy) );
+
+                        if (diff_snapped_x > diff_snapped_y)
+                        {
+                            new_x = clickX + dx + diff_snapped_x * -Math.Sign(dx);
+                            new_y = clickY + dy + diff_snapped_x * -Math.Sign(dy);
+                        }
+                        else
+                        {
+                            new_x = clickX + dx + diff_snapped_y * -Math.Sign(dx);
+                            new_y = clickY + dy + diff_snapped_y * -Math.Sign(dy);
+                        }
                     }
+                    else
+                    {
+                        new_x = clickX + dx;
+                        new_y = clickY + dy;
+                    }
+
+
+                    GoTo(new Vector2(new_x, new_y));
                 }
             }
 
@@ -225,7 +256,7 @@ public class Tool : MonoBehaviour
         if (Input.GetMouseButton(0) && !dragging && !PrecisionSlider.beingDragged)
         {
             double dir = Mathf.Atan2(mousePos.y - (float)y, mousePos.x - (float)x) * (180 / Mathf.PI);
-            double step = PJ.MODE.Equals("ANGULAR") ? 30.0 / PJ.precision : (PJ.MODE.Equals("CARDINAL") ? 90.0 : 0);
+            double step = PJ.MODE.Equals("ANGULAR") ? 30.0 / PJ.precision : (PJ.MODE.Equals("CARDINAL") ? 45.0 : 0);
             heading = Round(dir/step)*step;
         }
 
