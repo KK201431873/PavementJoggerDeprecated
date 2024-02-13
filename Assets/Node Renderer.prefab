@@ -106,3 +106,4 @@ MonoBehaviour:
   ARM: {fileID: 21300000, guid: 6d4724210fdca9f4a8b5909bc451f8b8, type: 3}
   ELBOW: {fileID: 21300000, guid: 8a4aaf792f62caf45b887d07463ec4a5, type: 3}
   NULL: {fileID: 21300000, guid: cc53c2770ca8fe249b1feb6d49ad89e4, type: 3}
+  spriteRenderer: {fileID: 7712455930523404876}

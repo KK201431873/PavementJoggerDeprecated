@@ -7,7 +7,8 @@ public class NodeRenderer : MonoBehaviour
 
     public int index;
 
-    public Sprite DRIVE, DELAY, TURN_LEFT, TURN_RIGHT, CLAW, ARM, ELBOW, NULL;
+    [SerializeField] private Sprite DRIVE, DELAY, TURN_LEFT, TURN_RIGHT, CLAW, ARM, ELBOW, NULL;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
     public NodeRenderer SetIndex(int index)
     {
@@ -38,16 +39,20 @@ public class NodeRenderer : MonoBehaviour
         switch (action)
         {
             case "DRIVE":
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = DRIVE;
+                gameObject.GetComponent<SpriteRenderer>().sprite = DRIVE;
+                spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
                 break;
             case "DELAY":
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = DELAY;
+                gameObject.GetComponent<SpriteRenderer>().sprite = DELAY;
+                spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
                 break;
             case "TURN_LEFT":
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = TURN_LEFT;
+                gameObject.GetComponent<SpriteRenderer>().sprite = TURN_LEFT;
+                spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
                 break;
             case "TURN_RIGHT":
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = TURN_RIGHT;
+                gameObject.GetComponent<SpriteRenderer>().sprite = TURN_RIGHT;
+                spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
                 break;
             case "OPEN_LEFT_CLAW":
             case "CLOSE_LEFT_CLAW":
@@ -55,17 +60,21 @@ public class NodeRenderer : MonoBehaviour
             case "CLOSE_RIGHT_CLAW":
             case "OPEN_BOTH_CLAWS":
             case "CLOSE_BOTH_CLAWS":
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = CLAW;
+                gameObject.GetComponent<SpriteRenderer>().sprite = CLAW;
+                spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
                 break;
             case "ARM":
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = ARM;
+                gameObject.GetComponent<SpriteRenderer>().sprite = ARM;
+                spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
                 break;
             case "FLIP_ELBOW":
             case "REST_ELBOW":
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = ELBOW;
+                gameObject.GetComponent<SpriteRenderer>().sprite = ELBOW;
+                spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
                 break;
             default:
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = NULL;
+                gameObject.GetComponent<SpriteRenderer>().sprite = NULL;
+                spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
                 break;
         }
 

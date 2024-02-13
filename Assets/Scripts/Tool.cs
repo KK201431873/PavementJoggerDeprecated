@@ -96,10 +96,6 @@ public class Tool : MonoBehaviour
                     prheading = PJ.HEADING.Last(),
                     prarm = PJ.ARM.Last();
 
-                if (rx != prx || ry != pry) 
-                { // generic move case
-                    PJ.Add((rx, ry, rheading, prarm, "DRIVE", 0L));
-                } 
                 if (rheading != prheading)
                 { // turn cases
                     double diff = rheading - prheading;
@@ -107,6 +103,10 @@ public class Tool : MonoBehaviour
                     string turnAction = diff > 0 ? "TURN_LEFT" : "TURN_RIGHT";
                     PJ.Add((rx, ry, rheading, prarm, turnAction, 0L));
                 }
+                if (rx != prx || ry != pry) 
+                { // generic move case
+                    PJ.Add((rx, ry, prheading, prarm, "DRIVE", 0L));
+                } 
             }
         }
     }

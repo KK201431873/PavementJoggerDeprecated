@@ -1,8 +1,10 @@
+using SimpleExpressionEngine;
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -73,13 +75,13 @@ public class Calculator : MonoBehaviour
         // trigger import pane
         if (Input.GetKeyDown(KeyCode.I) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.LeftCommand)))
         {
-            importPaneActive = true;
+            importPaneActive = !importPaneActive;
             exportPaneActive = false;
         }
 
         // adjust pane height
         int newlines = Regex.Matches(exportText.text, "\n|\r").Count;
-        contentView.sizeDelta = new Vector2(contentView.sizeDelta.x, newlines * 70);
+        contentView.sizeDelta = new Vector2(contentView.sizeDelta.x, 100 + newlines * 70);
         exportPane.SetActive(exportPaneActive);
         importPane.SetActive(importPaneActive);
 
@@ -125,39 +127,51 @@ public class Calculator : MonoBehaviour
         return (findString, findStringComp);
     }
 
-    private void MatchAction(string s, string findString, ref List<string> m_action, ref List<string> NAME)
+    private void MatchAction(string findString, ref List<string> m_action, ref List<string> NAME)
     {
-        if (type_drive.Contains(s))
+        if (type_drive.Contains(findString))
         {
             m_action.Add("DRIVE");
             NAME.Add("");
             return;
         }
-        if (type_turn.Contains(s))
+        if (type_turn.Contains(findString))
         {
-            m_action.Add(s.Equals("turnLeft") ? "TURN_LEFT" : "TURN_RIGHT");
-            NAME.Add(findString);
+            Dictionary<string, string> maps = new Dictionary<string, string>(){
+                {"turnLeft", "TURN_LEFT"},
+                {"turnRight", "TURN_RIGHT"}};
+            m_action.Add(maps[findString]);
             return;
         }
-        if (type_arm.Contains(s))
+        if (type_arm.Contains(findString))
         {
             m_action.Add("ARM");
             NAME.Add(findString);
             return;
         }
-        if (type_elbow.Contains(s))
+        if (type_elbow.Contains(findString))
         {
-            m_action.Add("ELBOW");
+            Dictionary<string, string> maps = new Dictionary<string, string>(){
+                {"flipElbow", "FLIP_ELBOW"},
+                {"restElbow", "REST_ELBOW"}};
+            m_action.Add(maps[findString]);
             NAME.Add(findString);
             return;
         }
-        if (type_claw.Contains(s))
+        if (type_claw.Contains(findString))
         {
-            m_action.Add("CLAW");
+            Dictionary<string, string> maps = new Dictionary<string, string>(){
+                {"openRightClaw", "OPEN_RIGHT_CLAW"},
+                {"openLeftClaw", "OPEN_LEFT_CLAW"},
+                {"openBothClaws", "OPEN_BOTH_CLAWS"},
+                {"closeRightClaw", "CLOSE_RIGHT_CLAW"},
+                {"closeLeftClaw", "CLOSE_LEFT_CLAW"},
+                {"closeBothClaws", "CLOSE_BOTH_CLAWS"}};
+            m_action.Add(maps[findString]);
             NAME.Add(findString);
             return;
         }
-        if (s.Equals("sleepFor"))
+        if (findString.Equals("sleepFor"))
         {
             m_action.Add("DELAY");
             NAME.Add(findString);
@@ -233,12 +247,13 @@ public class Calculator : MonoBehaviour
         while (i < s.Length)
         {
             FindNext(ref i, '.', s);
+            i++;
             (string findString, string findStringComp) find = FindNext(ref i, '(', s);
             string findString = find.findString, findStringComp = find.findStringComp;
             if (findString.Length > 0)
             {
                 m_name.Add(findString);
-                MatchAction(s, findString, ref m_action, ref NAME);
+                MatchAction(findString, ref m_action, ref NAME);
             }
 
             findString = "";
@@ -258,11 +273,11 @@ public class Calculator : MonoBehaviour
             {
                 int i_temp = i, argsCount = 1;
                 findStringComp = findString;
-                while (!findStringComp.Contains("."))
+                while (findStringComp.Contains(","))
                 {
                     argsCount++;
                     i = 0;
-                    find = FindNext(ref i, '.', findStringComp);
+                    find = FindNext(ref i, ',', findStringComp);
                     findString = find.findString; findStringComp = find.findStringComp;
                     m_args.Add(Eval(findString));
                 }
@@ -276,7 +291,8 @@ public class Calculator : MonoBehaviour
     private void GetTranslatedPoses(ref List<double> readX, ref List<double> readY, ref List<double> readH, ref List<string> readA, ref List<string> m_name, ref List<string> m_action, ref List<int> m_argsCount, ref List<double> m_args)
     {
         double t_x = readX[0], t_y = readY[0], t_h = readH[0];
-        for (int i = 0; i < m_name.Count; i++)
+        int total_iterations = m_name.Count;
+        for (int i = 0; i < total_iterations; i++)
         {
             string t_n = m_name[0], t_a = m_action[0];
             double t_arg1 = 0, t_arg2 = 0;
@@ -350,18 +366,12 @@ public class Calculator : MonoBehaviour
 
     private void ReplaceOldLists(ref List<double> readX, ref List<double> readY, ref List<double> readH, ref List<string> readA)
     {
-        PJ.X.Clear();
-        PJ.Y.Clear();
-        PJ.HEADING.Clear();
-        PJ.ACTION.Clear();
+        PJ.ClearFrom(0);
 
         int iterations = readX.Count;
         for (int i = 0; i < iterations; i++)
         {
-            PJ.X.Add(readX[0]);
-            PJ.Y.Add(readY[0]);
-            PJ.HEADING.Add(readH[0]);
-            PJ.ACTION.Add(readA[0]);
+            PJ.Add(i, (readX[0], readY[0], readH[0], 0, readA[0], 0));
             readX.RemoveAt(0);
             readY.RemoveAt(0);
             readH.RemoveAt(0);
@@ -373,7 +383,7 @@ public class Calculator : MonoBehaviour
     private string GenerateString()
     {
 
-        if (PJ.X.Count <= 1)
+        if (PJ.X.Count == 0)
             return "";
 
         double x = Round(PJ.X[0], 2);
@@ -488,7 +498,7 @@ public class Calculator : MonoBehaviour
 
     private static double Eval(string s)
     {
-        return Convert.ToDouble(new DataTable().Compute(s, ""));
+        return !s.Any(x => char.IsLetter(x)) && s.Length > 0 ? Parser.Parse(s).Eval(null) : 0;
     }
 
 }

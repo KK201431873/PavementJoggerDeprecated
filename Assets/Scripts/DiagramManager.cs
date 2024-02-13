@@ -14,9 +14,9 @@ public class DiagramManager : MonoBehaviour
     {
         while (PJ.requests.Count > 0)
         {
-            var (req, index, values) = PJ.requests[^1];
+            var (req, index, values) = PJ.requests[0];
             string action = values.action;
-            PJ.requests.RemoveAt(PJ.requests.Count - 1);
+            PJ.requests.RemoveAt(0);
 
             if (req.Equals("ADD"))
             {
