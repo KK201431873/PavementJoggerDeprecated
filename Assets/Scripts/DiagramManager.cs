@@ -7,8 +7,8 @@ public class DiagramManager : MonoBehaviour
 
     [SerializeField] private NodeRenderer nodeBase;
     [SerializeField] private PathRenderer pathBase;
-    public List<NodeRenderer> nodes;
-    public List<PathRenderer> paths;
+    public static List<NodeRenderer> nodes = new();
+    public static List<PathRenderer> paths = new();
 
     void Update()
     {
@@ -36,6 +36,29 @@ public class DiagramManager : MonoBehaviour
 
                 nodes.Insert(index, Instantiate(nodeBase, transform).SetIndex(index));
                 paths.Insert(index, Instantiate(pathBase, transform).SetIndex(index));
+            }
+
+            if (req.Equals("REMOVE"))
+            {
+                // fill in space 
+                for (int i = index; i < PJ.X.Count; i++)
+                {
+                    nodes[i].SetIndex(i - 1);
+                    paths[i].SetIndex(i - 1);
+                }
+
+                PJ.X.RemoveAt(index);
+                PJ.Y.RemoveAt(index);
+                PJ.HEADING.RemoveAt(index);
+                PJ.ACTION.RemoveAt(index);
+                PJ.ARM.RemoveAt(index);
+                PJ.DELAY.RemoveAt(index);
+
+                nodes[index].Kill();
+                paths[index].Kill();
+                nodes.RemoveAt(index);
+                paths.RemoveAt(index);
+
             }
 
             if (req.Equals("CLEAR") && (0 <= index && index < PJ.X.Count))

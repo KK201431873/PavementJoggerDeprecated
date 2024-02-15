@@ -28,7 +28,7 @@ public class Tool : MonoBehaviour
         tf = transform;
         x = 0;
         y = 0;
-        heading = -90;
+        heading = 0;
         realPose = Vector3.zero;
         GoTo(new Vector2(0, 0));
     }
@@ -36,17 +36,37 @@ public class Tool : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (!Calculator.exportPaneActive && !Calculator.importPaneActive)
         {
             // handle mode
             if (Input.GetKeyDown(KeyCode.A))
                 PJ.MODE = PJ.MODE.Equals("CARDINAL") ? "ANGULAR" : (PJ.MODE.Equals("ANGULAR") ? "CARDINAL" : "null");
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+                PJ.MODE = "CARDINAL";
+            else if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+                PJ.MODE = "ANGULAR";
 
-            // handle editing event
-            HandleMouseMovement();
-            HandleKeyboardMovement();
-            HandleNodeCreation();
-            HandleNodeDeletion();
+            bool nodeEditing = false;
+            foreach (NodeRenderer node in DiagramManager.nodes) nodeEditing = nodeEditing || node.hovering || node.dragging;
+
+            if (!nodeEditing)
+            {
+                // quick send back to start
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    x = 0;
+                    y = 0;
+                    heading = 0;
+                }
+
+                // handle editing event
+                HandleMouseMovement();
+                HandleKeyboardMovement();
+                HandleNodeCreation();
+                HandleNodeDeletion();
+            }
+
         }
 
 
@@ -55,12 +75,21 @@ public class Tool : MonoBehaviour
         realPose.y = (float)(y * PJ.in_per_px);
         realPose.z = (float)heading;
         poseText.text = "X: "+Round(x*PJ.in_per_px,2)+
-            "in\nY: "+Round(y*PJ.in_per_px,2)+
-            "in\nR: " + Round(heading, 2) + "°";
+            "in\nY: " + Round(y*PJ.in_per_px,2)+
+            "in\nR: " + Round(heading, 2) + 
+            "°\nN: " + GetNodeCount();
         modeText.text = PJ.MODE;
         tf.position = new Vector3((float)x, (float)y, tf.position.z);
         tf.eulerAngles = new Vector3(0,0,(float)heading);
         size = transform.localScale;
+    }
+
+    private int GetNodeCount()
+    {
+        int count = 0;
+        foreach (string action in PJ.ACTION)
+            if (action.Equals("DRIVE")) count++;
+        return count;
     }
 
     private void HandleNodeDeletion()
@@ -74,6 +103,7 @@ public class Tool : MonoBehaviour
                 (Input.GetKeyDown(KeyCode.R) && Input.GetKey(KeyCode.Q)))
         { // reset 
             PJ.ClearFrom(0);
+            heading = 0;
         }
     }
 
@@ -119,8 +149,7 @@ public class Tool : MonoBehaviour
             arrowsPressed = false;
 
         // can only drag or arrow key to move, not both simultaneously
-        if (dragging)
-            return;
+        if (dragging) return;
 
         double ipp = PJ.in_per_px;
         double precision = PJ.precision;

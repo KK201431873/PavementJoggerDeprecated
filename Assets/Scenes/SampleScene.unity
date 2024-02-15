@@ -193,8 +193,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 872.61237, y: -524.6196}
-  m_SizeDelta: {x: 174.777, y: 30.762}
+  m_AnchoredPosition: {x: 775.68, y: -496.72714}
+  m_SizeDelta: {x: 304.2047, y: 86.5522}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &290198693
 MonoBehaviour:
@@ -218,18 +218,20 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 646bd116d451e884fad8450ac03d957e, type: 3}
-    m_FontSize: 16
+    m_FontSize: 30
     m_FontStyle: 2
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 58
-    m_Alignment: 0
+    m_Alignment: 2
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: PavementJogger v1.0
+  m_Text: 'PavementJogger v1.1
+
+    2/24'
 --- !u!222 &290198694
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -697,7 +699,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -451.45, y: -254.89}
+  m_AnchoredPosition: {x: -451.47003, y: -186.11}
   m_SizeDelta: {x: 902.89, y: 75.22}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &756346278
@@ -899,8 +901,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeBase: {fileID: 776192629246822013, guid: 34b3b8267545c9d4a9ebcee9a61e42ce, type: 3}
   pathBase: {fileID: 3275644877173486632, guid: 7a6024672c6a7504bbb423eac2275c16, type: 3}
-  nodes: []
-  paths: []
 --- !u!4 &820959887
 Transform:
   m_ObjectHideFlags: 0
@@ -2508,8 +2508,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -451.45, y: -416.25}
-  m_SizeDelta: {x: 902.9, y: 247.5}
+  m_AnchoredPosition: {x: -451.47, y: -381.86}
+  m_SizeDelta: {x: 902.89, y: 316.2817}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2022141050
 MonoBehaviour:

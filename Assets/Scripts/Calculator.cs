@@ -16,7 +16,7 @@ public class Calculator : MonoBehaviour
     [SerializeField] private RectTransform contentView;
     [SerializeField] private GameObject exportPane;
     [SerializeField] private GameObject importPane;
-    private bool generate;
+    private bool generate, copied;
     public static bool exportPaneActive, importPaneActive;
 
     private List<string> 
@@ -43,6 +43,7 @@ public class Calculator : MonoBehaviour
         exportText.text = "";
         importText.text = "";
         generate = false;
+        copied = false;
     }
 
     void Update()
@@ -63,7 +64,7 @@ public class Calculator : MonoBehaviour
         }
 
         // trigger export pane
-        if (Input.GetKeyDown(KeyCode.E) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.LeftCommand)) && !importPaneActive)
+        if (Input.GetKeyDown(KeyCode.E) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.RightCommand)) && !importPaneActive)
         {
             exportPaneActive = !exportPaneActive;
             importPaneActive = false;
@@ -73,12 +74,21 @@ public class Calculator : MonoBehaviour
         // display copyable text onscreen
         if (generate)
         {
-            exportText.text = GenerateString();
+            exportText.text = "// Press Ctrl/Cmd + C to copy to clipboard.\n"+GenerateString();
+            copied = false;
             generate = false;
         }
 
+        if (!copied && exportPaneActive && Input.GetKeyDown(KeyCode.C) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.RightCommand)))
+        {
+            string copyText = exportText.text.Substring(Math.Max(0, exportText.text.IndexOf('\n')));
+            GUIUtility.systemCopyBuffer = copyText;
+            exportText.text = "// Copied to clipboard!" + copyText;
+            copied = true;
+        }
+
         // trigger import pane
-        if (Input.GetKeyDown(KeyCode.I) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.LeftCommand)))
+        if (Input.GetKeyDown(KeyCode.I) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.LeftCommand) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.RightCommand)))
         {
             importPaneActive = !importPaneActive;
             exportPaneActive = false;
