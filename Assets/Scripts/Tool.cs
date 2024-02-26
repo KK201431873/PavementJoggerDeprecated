@@ -209,9 +209,9 @@ public class Tool : MonoBehaviour
             double step = 3 / (PJ.precision * ipp);
             double[,] snapPoints = {
                 {-40.75/ipp, 63.5/ipp}, // farBlue
-                {40.75/ipp, 63.5/ipp}, // closeBlue
+                {16.75/ipp, 63.5/ipp}, // closeBlue
                 {-40.75/ipp, -63.5/ipp}, // farRed
-                {40.75/ipp, -63.5/ipp}  // closeRed
+                {16.75/ipp, -63.5/ipp}  // closeRed
             };
             bool snapped = false;
             if (PJ.X.Count == 0)
@@ -220,6 +220,7 @@ public class Tool : MonoBehaviour
                 {
                     if (Hypot(snapPoints[i, 0] - mousePos.x, snapPoints[i, 1] - mousePos.y) < 0.5)
                     {
+                        Debug.Log("distance to " + i + ": " + Hypot(snapPoints[i, 0] - mousePos.x, snapPoints[i, 1] - mousePos.y));
                         GoTo(new Vector2((float)snapPoints[i, 0], (float)snapPoints[i, 1]));
                         snapped = true;
                         break;
