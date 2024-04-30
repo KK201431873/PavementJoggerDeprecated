@@ -104,21 +104,21 @@ public class FlexibleResizeHandler : MonoBehaviour
         {
             if (horizontalEdge == RectTransform.Edge.Right)
             {
+                float width = Mathf.Clamp(Target.rect.width - ped.delta.x, MinimumDimensions.x, MaximumDimensions.x);
                 Target.SetInsetAndSizeFromParentEdge((RectTransform.Edge)horizontalEdge,
                     Screen.width - Target.position.x - Target.pivot.x * Target.rect.width,
-                    Mathf.Clamp(Target.rect.width - ped.delta.x, MinimumDimensions.x, MaximumDimensions.x));
-                LabelBG.SetInsetAndSizeFromParentEdge((RectTransform.Edge)horizontalEdge,
-                    Screen.width - Target.position.x - Target.pivot.x * Target.rect.width,
-                    Mathf.Clamp(Target.rect.width - ped.delta.x, MinimumDimensions.x, MaximumDimensions.x));
+                    width);
+                LabelBG.sizeDelta = new Vector2(width, LabelBG.sizeDelta.y);
+                LabelBG.localPosition = new Vector3(0, LabelBG.localPosition.y, LabelBG.localPosition.z);
             }
             else
             {
+                float width = Mathf.Clamp(Target.rect.width + ped.delta.x, MinimumDimensions.x, MaximumDimensions.x);
                 Target.SetInsetAndSizeFromParentEdge((RectTransform.Edge)horizontalEdge,
                     Target.position.x - Target.pivot.x * Target.rect.width,
-                    Mathf.Clamp(Target.rect.width + ped.delta.x, MinimumDimensions.x, MaximumDimensions.x));
-                LabelBG.SetInsetAndSizeFromParentEdge((RectTransform.Edge)horizontalEdge,
-                    Target.position.x - Target.pivot.x * Target.rect.width,
-                    Mathf.Clamp(Target.rect.width + ped.delta.x, MinimumDimensions.x, MaximumDimensions.x));
+                    width);
+                LabelBG.sizeDelta = new Vector2(width, LabelBG.sizeDelta.y);
+                LabelBG.localPosition = new Vector3(0, LabelBG.localPosition.y, LabelBG.localPosition.z);
             }
         }
         if (verticalEdge != null)
