@@ -39,7 +39,7 @@ public class FlexibleResizeHandler : MonoBehaviour
 
         if (Type == HandlerType.Right || Type == HandlerType.Left)
         {
-            MinimumDimensions = new Vector2(200, 1080);
+            MinimumDimensions = new Vector2(300, 1080);
             MaximumDimensions = new Vector2(600, 1080);
         }
 
