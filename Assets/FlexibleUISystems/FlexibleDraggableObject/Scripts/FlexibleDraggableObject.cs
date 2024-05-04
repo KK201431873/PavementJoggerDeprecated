@@ -6,6 +6,7 @@ public class FlexibleDraggableObject : MonoBehaviour
 {
     public GameObject Target;
     private EventTrigger _eventTrigger;
+    public bool enableSnapping = false;
     void Start ()
     {
         _eventTrigger = GetComponent<EventTrigger>();
