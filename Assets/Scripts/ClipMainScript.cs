@@ -11,8 +11,8 @@ public class ClipMainScript : MonoBehaviour
         Claw
     }
     public ClipType clipType;
-    public float clipLength = 1; //should be in seconds, does the action in the alotted time.
-    public int distance = 0; //distance traveled, either movement, or arm rotation
+    public float duration = 1; //should be in seconds, does the action in the alotted time.
+    public float startTime = 0;
 
     // Start is called before the first frame update
     void Start()
