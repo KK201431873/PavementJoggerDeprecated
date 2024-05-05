@@ -688,7 +688,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToSetPos: {fileID: 1744847058}
-  clip: {fileID: 8838483231285297482, guid: 90445f57369cbd4408d2481aab4e6a40, type: 3}
+  clip: {fileID: 2452588085143994067, guid: 60634e7945bc5564498e6ace9f8d12e9, type: 3}
   Parent: {fileID: 1380461595}
 --- !u!1 &498316391
 GameObject:
@@ -2023,7 +2023,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.83921576, g: 0.6666667, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.7943925, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2149,7 +2149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.83921576, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2537,7 +2537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToSetPos: {fileID: 1019691773}
-  clip: {fileID: 8838483231285297482, guid: 90445f57369cbd4408d2481aab4e6a40, type: 3}
+  clip: {fileID: 2771974071645084238, guid: 92750b9827c5d954f88982796bf15935, type: 3}
   Parent: {fileID: 1380461595}
 --- !u!1 &2081445888
 GameObject:
