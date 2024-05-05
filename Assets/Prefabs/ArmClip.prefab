@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4994574783121528805}
   - component: {fileID: 4784277959995968199}
   - component: {fileID: 2235888371816595098}
+  - component: {fileID: -9019187410525086600}
   m_Layer: 5
   m_Name: ArmClip
   m_TagString: Untagged
@@ -37,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 207.7175, y: 100}
+  m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8900862756246312115
 CanvasRenderer:
@@ -155,3 +156,18 @@ MonoBehaviour:
   SnappingDistance: 58
   snappingFound: {fileID: 0}
   previousPos: {x: 0, y: 0, z: 0}
+--- !u!114 &-9019187410525086600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7643069624763534682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe0cc8cf0a9a867438fe619390220c73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipType: 0
+  duration: 2
+  startTime: 0
