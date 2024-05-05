@@ -14,20 +14,26 @@ public class OnClickDrag : MonoBehaviour
     public float SnappingDistance;
     public Transform snappingFound;
 
+    float offSetX;
+    float offSetY;
+
     // Start is called before the first frame update
     void Start()
     {
         snappingFound = GameObject.Find(snappingTarget).transform;
         Parent = gameObject.transform.parent.gameObject.transform;
+
+        offSetX = transform.position.x - Input.mousePosition.x;
+        offSetY = transform.position.y - Input.mousePosition.y;
     }
     private void Update()
     {
+
         mousePos = Input.mousePosition;
-        transform.position = new Vector2(mousePos.x, mousePos.y);
-        if (transform.position.y < snappingFound.position.y + SnappingDistance)
+        transform.position = new Vector2(mousePos.x + offSetX, mousePos.y + offSetY);
+        if (transform.position.y < snappingFound.position.y + SnappingDistance && transform.position.y > snappingFound.position.y - SnappingDistance)
         {
-            Debug.Log("Snapping trying to occur");
-            transform.position = new Vector3(transform.position.x, snappingFound.position.y, transform.position.z);
+            transform.position = new Vector3(mousePos.x + offSetX, snappingFound.position.y, transform.position.z);
         }
 
         if (Input.GetMouseButton(0) == false)

@@ -105,5 +105,5 @@ MonoBehaviour:
   createOnRelease: {fileID: 7643069624763534682, guid: d7435d083b476014bba30f7030110f4d, type: 3}
   enableSnapping: 1
   snappingTarget: ArmTimeLine
-  SnappingDistance: 75
+  SnappingDistance: 58
   snappingFound: {fileID: 0}

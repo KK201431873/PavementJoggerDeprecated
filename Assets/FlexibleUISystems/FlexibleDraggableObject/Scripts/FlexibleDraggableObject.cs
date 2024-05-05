@@ -5,40 +5,38 @@ using UnityEngine.EventSystems;
 public class FlexibleDraggableObject : MonoBehaviour
 {
     public GameObject Target;
-    private EventTrigger _eventTrigger;
-    public bool enableSnapping = false;
+    //public bool enableSnapping = false;
     public string snappingTarget;
     public float SnappingDistance;
     public Transform snappingFound;
-    Vector3 previousPos;
+    public Vector3 previousPos;
+    Vector3 mousePos;
 
+    float offSetX;
+    float offSetY;
     void Start ()
     {
+        previousPos = transform.position;
         snappingFound = GameObject.Find(snappingTarget).transform;
-        _eventTrigger = GetComponent<EventTrigger>();
-        _eventTrigger.AddEventTrigger(OnDrag, EventTriggerType.Drag);
     }
-
-    void OnDrag(BaseEventData data)
+    public void OnbeginDrag()
     {
-        PointerEventData ped = (PointerEventData) data;
-        Target.transform.Translate(ped.delta);
-
-        if (transform.position.y < snappingFound.position.y + SnappingDistance)
-        {
-            Debug.Log("Snapping trying to occur");
-            transform.position = new Vector3(transform.position.x, snappingFound.position.y, transform.position.z);
-        }
-        //if (enableSnapping == true && previousPos != null)
-        //{
-        //    if (Vector3.Distance(previousPos, transform.position) < SnappingDistance)
-        //    {
-        //        transform.position = previousPos;
-        //    }
-        //}
+        mousePos = Input.mousePosition;
+        offSetX = transform.position.x - mousePos.x;
+        offSetY = transform.position.y - mousePos.y;
     }
 
-    void OnRelease()
+    public void OnDrag() //used to have BaseEventData data
+    {
+        mousePos = Input.mousePosition;
+        Target.transform.position = new Vector2(mousePos.x + offSetX, mousePos.y + offSetY);
+        if (transform.position.y < previousPos.y + SnappingDistance && transform.position.y > previousPos.y - SnappingDistance)
+        {
+            transform.position = new Vector2(mousePos.x + offSetX, previousPos.y);
+        }
+    }
+
+    public void OnRelease()
     {
         previousPos = transform.position;
     }
